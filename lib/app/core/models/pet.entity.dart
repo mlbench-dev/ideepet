@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:idee_pet/app/app.dart';
 
 class Pet {
@@ -7,6 +8,7 @@ class Pet {
   final Breed? breed;
   final PetAge? age;
   final PetSize? size;
+  final String? edgeUrl;
   final String? userId;
   final PetWeight? weight;
   final List<PetPersonality> personalitys;
@@ -35,6 +37,7 @@ class Pet {
     this.breed,
     this.age = PetAge.op0,
     this.size = DogSize.small,
+    this.edgeUrl,
     this.userId = '',
     this.weight = DogWeight.op1,
     this.personalitys = const [],
@@ -59,6 +62,8 @@ class Pet {
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) {
+    debugPrint('@@@ Pet keys: ${json.keys.toList()}');
+    debugPrint('@@@ Pet nose_edge_url: ${json['nose_edge_url']}');
     late PetType type;
     if (json['type'] != null) {
       type = PetType.fromJson(json['type']);
@@ -76,6 +81,7 @@ class Pet {
               id: json['breed_id'], name: json['breed_name'] ?? 'Desconhecido'),
       age: json['age'] != null ? PetAge.fromValue(json['age']) : null,
       size: json['size'] != null ? PetSize.fromValue(type, json['size']) : null,
+      edgeUrl: json['nose_edge_url'],
       weight: json['weight'] != null
           ? PetWeight.fromValue(type, json['weight'])
           : null,

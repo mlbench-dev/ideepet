@@ -62,6 +62,7 @@ class _WalletPetState extends State<WalletPet> {
                         widthScreen: widthScreen,
                       ),
                       WalletBack(
+                        pet: widget.pet,
                         profile: widget.profile,
                         heightScreen: heightScreen,
                         widthScreen: widthScreen,
