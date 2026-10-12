@@ -33,6 +33,13 @@ class BiometricsRepository extends BaseRepository {
     );
   }
 
+  /// Pings the CV server so it starts up (cold start) before the biometry
+  /// video is submitted.
+  Future<bool> wakeUpCvServer() async {
+    final response = await get('/cv/health');
+    return (response.statusCode ?? 500) < 400;
+  }
+
   Future<BaseResponse<PetBiometryVideoResponse>> sendBiometryVideo(
     PetBiometryVideoRequest request, {
     void Function(double)? onProgress,

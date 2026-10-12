@@ -158,8 +158,6 @@ class OnboardingProfileStep1 extends StatelessWidget {
                                 ? controller.addressError()
                                 : null,
                             onChanged: (_) => controller.validateAddressField(),
-                            enabled: controller.canManualEdit.isTrue ||
-                                controller.isChanging,
                           ),
                         ),
                         SizedBox(width: 10),

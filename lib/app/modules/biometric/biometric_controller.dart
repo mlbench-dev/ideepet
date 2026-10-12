@@ -56,9 +56,25 @@ class BiometricController extends GetxController {
   final isUploadingBiometry = false.obs;
   final uploadProgress = 0.0.obs;
 
+  Future<bool>? _cvServerWakeUp;
+
+  /// Starts the CV server in the background while the user records the video.
+  void wakeUpCvServer() {
+    _cvServerWakeUp ??= _biometricsRepository.wakeUpCvServer();
+  }
+
   Future<bool> sendBiometryVideo(File video) async {
     isUploadingBiometry(true);
     uploadProgress(0.0);
+
+    // Make sure the CV server is up before submitting the video. If the
+    // health check fails we still try the upload.
+    wakeUpCvServer();
+    final isServerUp = await _cvServerWakeUp!;
+    if (!isServerUp) {
+      _cvServerWakeUp = null;
+      debugPrint('⚠️ CV server health check failed, sending video anyway.');
+    }
 
     final response = await _biometricsRepository.sendBiometryVideo(
       PetBiometryVideoRequest(id: pet.id, video: video),

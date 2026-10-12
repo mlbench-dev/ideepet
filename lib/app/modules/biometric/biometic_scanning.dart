@@ -27,6 +27,7 @@ class _BiometicScanningState extends State<BiometicScanning>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    controller.wakeUpCvServer();
     _initializeCamera();
   }
 
