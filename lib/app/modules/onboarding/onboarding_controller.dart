@@ -374,6 +374,7 @@ class OnboardingController extends GetxController {
       neightbourhood: neightbourhoodController.text == ''
           ? null
           : neightbourhoodController.text,
+      influencerId: BranchService.referredInfluencerId,
       image: profileImage.value,
     );
     try {
@@ -404,6 +405,7 @@ class OnboardingController extends GetxController {
 
     final response = await _repository.createUser(request);
     if (response.result != null && response.success) {
+      await BranchService.clearInfluencer();
       showSuccess(message: 'Usuário criado com sucesso!');
       code(response.result?.code);
       await _navigationService.toNamed(OtpRoutes.otp, arguments: code());
