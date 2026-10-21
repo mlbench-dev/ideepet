@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="cantoneiras teal" clip-path="url(#clip0_0_42)">
+<path id="Vector" d="M2 34V22C2 16.6957 4.10714 11.6086 7.85786 7.85786C11.6086 4.10714 16.6957 2 22 2H34M94 2H106C111.304 2 116.391 4.10714 120.142 7.85786C123.893 11.6086 126 16.6957 126 22V34M126 94V106C126 111.304 123.893 116.391 120.142 120.142C116.391 123.893 111.304 126 106 126H94M34 126H22C16.6957 126 11.6086 123.893 7.85786 120.142C4.10714 116.391 2 111.304 2 106V94" stroke-width="4" stroke-linecap="round" stroke="#00CDCF"/>
+</g>
+<defs>
+<clipPath id="clip0_0_42">
+<rect width="128" height="128" fill="white"/>
+</clipPath>
+</defs>
+</svg>

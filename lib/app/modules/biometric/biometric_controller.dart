@@ -87,11 +87,9 @@ class BiometricController extends GetxController {
       return true;
     }
 
-    showError(
-      message: response.errorMessages.isNotEmpty
-          ? response.errorMessages.first
-          : 'Não foi possível processar o vídeo.',
-    );
+    // The scanning screen shows NF-04 (Nova leitura necessária) instead of
+    // an error message.
+    debugPrint('Biometry video rejected: ${response.errorMessages}');
     return false;
   }
 
@@ -150,7 +148,7 @@ class BiometricController extends GetxController {
       );
 
       if (response.success) {
-        _navigationService.toNamed(BiometricRoutes.guide, arguments: pet);
+        _navigationService.toNamed(BiometricRoutes.howToDo, arguments: pet);
       } else {
         showError(message: 'Erro ao enviar a foto do pet');
       }

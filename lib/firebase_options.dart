@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -49,20 +46,29 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBygExI8d7eUKruIsLChdq6ui9KNQDKozk',
+    appId: '1:721852722464:web:d709be9380727fdec0bb45',
+    messagingSenderId: '721852722464',
+    projectId: 'pet-hero-423816',
+    authDomain: 'pet-hero-423816.firebaseapp.com',
+    storageBucket: 'pet-hero-423816.firebasestorage.app',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDFHEeIzRE8SmSVTSqRhRbrgOx1Sn2smKA',
-    appId: '1:123109840614:android:5562b5fe26ea2b8086cd27',
-    messagingSenderId: '123109840614',
-    projectId: 'ideal-pet-4376b',
-    storageBucket: 'ideal-pet-4376b.firebasestorage.app',
+    apiKey: 'AIzaSyBygExI8d7eUKruIsLChdq6ui9KNQDKozk',
+    appId: '1:721852722464:android:5562b5fe26ea2b8086cd27',
+    messagingSenderId: '721852722464',
+    projectId: 'pet-hero-423816',
+    storageBucket: 'pet-hero-423816.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBsrjIQRtONW_aBEzXA17g6_ok56S-lU7U',
-    appId: '1:123109840614:ios:d82e596c2e3e8f9586cd27',
-    messagingSenderId: '123109840614',
-    projectId: 'ideal-pet-4376b',
-    storageBucket: 'ideal-pet-4376b.firebasestorage.app',
-    iosBundleId: 'com.example.idealPetId',
+    apiKey: 'AIzaSyBygExI8d7eUKruIsLChdq6ui9KNQDKozk',
+    appId: '1:721852722464:ios:d82e596c2e3e8f9586cd27',
+    messagingSenderId: '721852722464',
+    projectId: 'pet-hero-423816',
+    storageBucket: 'pet-hero-423816.firebasestorage.app',
+    iosBundleId: 'br.com.ideepet.app',
   );
 }

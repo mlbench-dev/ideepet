@@ -17,6 +17,7 @@ class CreateUserRequest {
   final String? addressNumber;
   String? addressLat;
   String? addressLong;
+  final String? influencerId;
   File? image;
 
   CreateUserRequest({
@@ -33,6 +34,7 @@ class CreateUserRequest {
     this.addressNumber,
     this.addressLat,
     this.addressLong,
+    this.influencerId,
     this.image,
   });
 
@@ -61,6 +63,7 @@ class CreateUserRequest {
     add('address_number', addressNumber);
     add('address_lat', addressLat);
     add('address_long', addressLong);
+    add('influencer_id', influencerId);
 
     // ?? imagem
     if (image != null) {
