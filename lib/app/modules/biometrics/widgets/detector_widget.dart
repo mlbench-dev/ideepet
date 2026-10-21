@@ -103,6 +103,13 @@ class _DetectorWidgetState extends State<DetectorWidget>
   void _initializeCamera() async {
     cameras = await availableCameras();
 
+    if (cameras.isEmpty) {
+      if (mounted) {
+        showError(message: 'Nenhuma câmera disponível neste dispositivo.');
+      }
+      return;
+    }
+
     _cameraController = CameraController(
       cameras[0],
       ResolutionPreset.medium,

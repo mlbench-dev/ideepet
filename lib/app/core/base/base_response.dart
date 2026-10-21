@@ -92,9 +92,8 @@ class BaseResponse<T> {
     }
 
     // --- Determinação do Sucesso e Reporte de Erro HTTP ---
-    // Exemplo de lógica de sucesso que PODE FALHAR
-    bool isSuccess = (response.statusCode ?? 500) < 400;
-// Se statusCode for 0, (0 < 400) é TRUE, o que é ERRADO (0 é falha de rede)
+    final bool isSuccess =
+        responseStatusCode != null && responseStatusCode > 0 && responseStatusCode < 400;
 
     if (!isSuccess && !parseErrorOccurred) {
       BugTracking().send(
@@ -225,9 +224,8 @@ class BaseResponse<T> {
     }
 
     // --- Determinação do Sucesso e Reporte de Erro HTTP ---
-    // Exemplo de lógica de sucesso que PODE FALHAR
-    bool isSuccess = (response.statusCode ?? 500) < 400;
-    // Se statusCode for 0, (0 < 400) é TRUE, o que é ERRADO (0 é falha de rede)
+    final bool isSuccess =
+        responseStatusCode != null && responseStatusCode > 0 && responseStatusCode < 400;
 
     if (!isSuccess) {
       BugTracking().send(

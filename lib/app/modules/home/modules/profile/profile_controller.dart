@@ -121,22 +121,25 @@ class ProfileController extends GetxController {
   }
 
   Future<void> _setMarker() async {
-    await Future.delayed(
-      Duration(seconds: 2),
-      () {
-        mapController().addMarker(
-          GeoPoint(latitude: latitude(), longitude: longitude()),
-          markerIcon: MarkerIcon(
-            iconWidget: CircularImageWidget(
-              imageUrl: appStateService.pet().avatarUrl,
-              size: 40,
-              borderColor: AppColors.successColor,
-            ),
+    await Future.delayed(Duration(seconds: 2));
+    if (isClosed) return;
+    try {
+      await mapController().addMarker(
+        GeoPoint(latitude: latitude(), longitude: longitude()),
+        markerIcon: MarkerIcon(
+          iconWidget: CircularImageWidget(
+            imageUrl: appStateService.pet().avatarUrl,
+            size: 40,
+            borderColor: AppColors.successColor,
           ),
-        );
-      },
-    );
-    loadingMap(false);
+        ),
+      );
+    } catch (_) {
+      // flutter_osm_plugin screenshots the marker widget to render it;
+      // if the user navigated away before this delayed call fired, the
+      // map's repaint boundary is off-stage and the capture throws.
+    }
+    if (!isClosed) loadingMap(false);
   }
 
   void gotoEditPersonalInfo() {

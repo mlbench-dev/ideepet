@@ -32,7 +32,6 @@ class CustomLogo extends StatelessWidget {
     );
   }
 
-
   factory CustomLogo.logoName({double width = 120, double height = 120}) {
     return CustomLogo._(
       logoPath: 'assets/logo_name.svg',
@@ -86,6 +85,13 @@ class CustomLogo extends StatelessWidget {
   factory CustomLogo.biometricDog1({double width = 260, double height = 144}) {
     return CustomLogo._(
       logoPath: 'assets/onboarding_biometric/dog1.svg',
+      width: width,
+      height: height,
+    );
+  }
+  factory CustomLogo.logoOutline({double width = 260, double height = 144}) {
+    return CustomLogo._(
+      logoPath: 'assets/logo_outline.svg',
       width: width,
       height: height,
     );

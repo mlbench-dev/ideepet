@@ -332,7 +332,8 @@ class EditPetController extends GetxController {
   }
 
   void goToBiometry() {
-    _navigationService.toNamed(BiometricRoutes.biometric, arguments: pet);
+    // _navigationService.toNamed(BiometricRoutes.biometric, arguments: pet);
+    _navigationService.toNamed(BiometricRoutes.guide, arguments: pet);
   }
 
   void goToImage() {

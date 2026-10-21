@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:idee_pet/app/app.dart';
 import 'package:idee_pet/app/core/helpers/field.dart';
+import 'package:idee_pet/app/modules/find_pet_result/repository/find_pet_entity.dart';
 import 'package:idee_pet/app/modules/find_pet_result/repository/find_pet_result_repository.dart';
 import 'package:idee_pet/app/modules/find_pet_result/repository/sent_data_pet.dart';
 import 'package:idee_pet/app/modules/find_pet_result/widgets/sucess.dart';
@@ -14,7 +16,7 @@ class FindPetResultController extends GetxController {
   FindPetResultController(
       this._navigationService, this._findPetResultRepository);
 
-  late final List<File> images;
+  List<File>? images;
 
   final RxDouble progress = 0.0.obs;
   double latitude = 0;
@@ -26,39 +28,64 @@ class FindPetResultController extends GetxController {
 
     final args = Get.arguments as Map;
 
-    images = (args['images'] as List).cast<File>();
     getCurrentLocation();
-    uploadImages();
     loadProfile();
+
+    // The video-scan flow (PetFindScanning) already calls the identify API
+    // itself and passes the resulting FindPetResult directly, skipping the
+    // image-upload step below. The existing image-based flow is untouched.
+    final preloadedResult = args['result'];
+    if (preloadedResult is FindPetResult) {
+      findPet = preloadedResult.exists;
+      petId = preloadedResult.petId;
+      petName = preloadedResult.petName;
+    } else {
+      images = (args['images'] as List).cast<File>();
+      uploadImages();
+    }
   }
 
   Future<void> getCurrentLocation() async {
     try {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        showError(
-          message: 'Ative o GPS do seu dispositivo',
-        );
+        showError(message: 'Ative o GPS do seu dispositivo');
+        return;
+      }
+
+      // The video-scan flow (PetFindScanning) navigates straight here
+      // without ever requesting location permission first (unlike the old
+      // image-based flow, which requested it upfront), so it must be
+      // requested here too, or getCurrentPosition() throws.
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return;
       }
 
       final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
-      ).catchError((error) {
-        showError(
-          message: 'Erro ao obter localização',
-        );
-      });
+      );
 
       latitude = position.latitude;
       longitude = position.longitude;
     } catch (e) {
-      print('Erro: $e');
+      debugPrint('Erro ao obter localização: $e');
     }
   }
 
   Profile? currentUser;
 
   Future<void> loadProfile() async {
+    // The "found pet" scan flow is public and works for anonymous finders,
+    // so skip fetching a profile (and the resulting 401 error report) when
+    // there's no logged-in session at all.
+    final token = await Get.find<TokenService>().getAccessToken();
+    if (token == null) return;
+
     final auth = Get.find<AuthService>();
     currentUser = await auth.getProfileWithoutRedirect();
 
@@ -80,7 +107,8 @@ class FindPetResultController extends GetxController {
     loading.value = true;
     progress.value = 0.0;
 
-    final response = await _findPetResultRepository.findPet(images, (value) {
+    final response =
+        await _findPetResultRepository.findPet(images!, (value) {
       progress.value = value;
     });
     if (response.success) {

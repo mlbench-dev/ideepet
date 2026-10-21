@@ -41,6 +41,19 @@ class CustomButton extends StatelessWidget {
     );
   }
 
+  factory CustomButton.outlined({
+    required Widget title,
+    required VoidCallback? action,
+  }) {
+    return CustomButton._(
+      title: title,
+      action: action,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      border: BorderSide(color: AppColors.primary, width: 2),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBsrjIQRtONW_aBEzXA17g6_ok56S-lU7U</string>
+	<string>AIzaSyBygExI8d7eUKruIsLChdq6ui9KNQDKozk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>123109840614</string>
+	<string>721852722464</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.idealPetId</string>
+	<string>br.com.ideepet.app</string>
 	<key>PROJECT_ID</key>
-	<string>ideal-pet-4376b</string>
+	<string>pet-hero-423816</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ideal-pet-4376b.firebasestorage.app</string>
+	<string>pet-hero-423816.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:123109840614:ios:d82e596c2e3e8f9586cd27</string>
+	<string>1:721852722464:ios:d82e596c2e3e8f9586cd27</string>
 </dict>
 </plist>

@@ -131,10 +131,18 @@ class EditImagePage extends GetView<EditPetController> {
                                     fit: BoxFit.cover,
                                   )
                                 // 🌐 imagem já salva (URL)
-                                : controller.pet.avatarUrl != null
+                                : controller.pet.avatarUrl != null &&
+                                        controller.pet.avatarUrl!.isNotEmpty
                                     ? Image.network(
                                         controller.pet.avatarUrl!,
                                         fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Icon(
+                                          Icons.camera_alt,
+                                          size: 50,
+                                          color: AppColors.primary,
+                                        ),
                                       )
                                     // 👤 placeholder
                                     : Icon(

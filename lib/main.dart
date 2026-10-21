@@ -17,7 +17,7 @@ void main() async {
   } catch (e) {
     print('Failed to initialize Firebase: $e');
   }
-
+  await BranchService.init();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle.dark.copyWith(
       statusBarColor: Colors.transparent,
@@ -34,6 +34,8 @@ void main() async {
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'iDeePet',
+      // initialRoute: BiometricRoutes
+      //     .guide, // TODO: revert to SplashRoutes.splash after testing
       initialRoute: SplashRoutes.splash,
       getPages: AppPages.routes,
       locale: Locale('pt', 'BR'),

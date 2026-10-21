@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:idee_pet/app/app.dart';
 import 'package:idee_pet/app/modules/new_pet/repository/dtos/request/breed_request.dart';
 import 'package:idee_pet/app/modules/new_pet/repository/dtos/request/create_pet_request.dart';
+import 'package:idee_pet/app/routes/biometric_routes.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/core_old/handler/handler.dart';
@@ -345,7 +346,9 @@ class NewPetController extends GetxController {
     isLoading(false);
     if (response.success) {
       // _navigationService.offAllNamed(HomeRoutes.home, arguments: true);
-      _navigationService.offAllNamed(BiometricsRoutes.biometrics,
+      // _navigationService.offAllNamed(BiometricsRoutes.biometrics,
+      //     arguments: response.result);
+      _navigationService.offAllNamed(BiometricRoutes.petImage,
           arguments: response.result);
       showSuccess(message: 'Pet criado com sucesso');
     } else {

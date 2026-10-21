@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:idee_pet/app/app.dart';
+import 'package:idee_pet/app/modules/find_pet/pet_type_dialog.dart';
 import 'package:idee_pet/app/routes/find_pet_routes.dart';
 
 class InitialController extends GetxController {
@@ -10,5 +11,12 @@ class InitialController extends GetxController {
   void goToOnboarding() =>
       _navigationService.toNamed(OnboardingRoutes.onboarding);
 
-  void goToFindPet() => _navigationService.toNamed(FindPetRoutes.findPet);
+  Future<void> goToFindPet() async {
+    final petType = await showPetTypeDialog();
+    if (petType == null) return;
+    _navigationService.toNamed(
+      FindPetRoutes.guide,
+      arguments: {'pet': petType.value},
+    );
+  }
 }

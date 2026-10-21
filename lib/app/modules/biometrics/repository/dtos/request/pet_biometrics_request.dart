@@ -1,6 +1,7 @@
 import 'dart:io';
-import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
+
 import 'package:get/get_connect/http/src/multipart/form_data.dart';
+import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
 
 class PetBiometryRequest {
   final String id;
@@ -13,7 +14,10 @@ class PetBiometryRequest {
 
   FormData toFormData() {
     return FormData({
-      "files": images.map((file) => MultipartFile(file, filename: file.path.split('/').last)).toList(),
+      "files": images
+          .map((file) =>
+              MultipartFile(file, filename: file.path.split('/').last))
+          .toList(),
     });
   }
 }

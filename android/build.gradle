@@ -1,7 +1,7 @@
 buildscript {
 
     ext.kotlin_version = '2.2.20' // Verifique a versão recomendada/usada pelo Flutter
-    ext.google_services_version = '4.4.2' 
+    ext.google_services_version = '4.4.2'
 
     repositories {
       // Make sure that you have the following two repositories
@@ -18,7 +18,7 @@ buildscript {
 
         // Nota: Outras dependências de classpath podem ser necessárias dependendo dos plugins
     }
-   
+
 }
 
 allprojects {
@@ -26,7 +26,7 @@ allprojects {
         google()
         mavenCentral()
     }
-    
+
 }
 
 
@@ -37,8 +37,8 @@ subprojects {
     afterEvaluate { project ->
         if (project.hasProperty('android')) {
             project.android {
-                compileSdkVersion 35
-                buildToolsVersion "35.0.0"
+                compileSdkVersion 36
+                buildToolsVersion "36.0.0"
                 if (namespace == null) {
                     namespace = project.group.toString()  // Set namespace as fallback
                 }

@@ -18,6 +18,25 @@ class HomeRepository extends BaseRepository {
     );
   }
 
+  Future<BaseResponse<String>> sendLostPetAlert(
+    String petId, {
+    double? lat,
+    double? long,
+  }) async {
+    final body = <String, dynamic>{};
+    if (lat != null && long != null) {
+      body['lat'] = lat;
+      body['long'] = long;
+    }
+
+    final response = await post('$getPetsPath/$petId/lost-alert', body);
+
+    return BaseResponse.create<String>(
+      response: response,
+      fromMap: (data) => (data as Map)['message']?.toString() ?? '',
+    );
+  }
+
   Future<BaseResponse<int>> getIntNotifications() async {
     final response = await get(getNotificationsPath);
 

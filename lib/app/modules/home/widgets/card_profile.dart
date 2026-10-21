@@ -10,6 +10,7 @@ class CardProfileWidget extends StatefulWidget {
   final List<Pet> pets;
   final VoidCallback addNewPet;
   final VoidCallback editPet;
+  final VoidCallback goToBiometricScanning;
 
   const CardProfileWidget(
       {super.key,
@@ -19,7 +20,8 @@ class CardProfileWidget extends StatefulWidget {
       required this.profile,
       required this.pets,
       required this.addNewPet,
-      required this.editPet});
+      required this.editPet,
+      required this.goToBiometricScanning});
 
   @override
   State<CardProfileWidget> createState() => _CardProfileState();
@@ -121,12 +123,28 @@ class _CardProfileState extends State<CardProfileWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'Verified ${formatMonthYear(widget.pet.updatedAt)}',
-                        style: AppTextStyles.robotoMedium(
-                                fontSize: 8, color: AppColors.background)
-                            .style,
-                        overflow: TextOverflow.ellipsis,
+                      InkWell(
+                        onTap: () => widget.pet.isVerified
+                            ? _showVerifiedInfo(context)
+                            : widget.goToBiometricScanning(),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.pet.isVerified
+                                ? Colors.green
+                                : AppColors.errorColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            widget.pet.isVerified ? 'Verificado' : 'Não verificado',
+                            style: AppTextStyles.robotoMedium(
+                                    fontSize: 8, color: AppColors.white)
+                                .style,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                       const Spacer(),
                       InkWell(
@@ -170,6 +188,48 @@ class _CardProfileState extends State<CardProfileWidget> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showVerifiedInfo(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.verified, color: Colors.green),
+              const SizedBox(width: 8),
+              Text(
+                'Pet verificado',
+                style: AppTextStyles.title(
+                        color: AppColors.primary, fontSize: 16)
+                    .style,
+              ),
+            ],
+          ),
+          content: Text(
+            'Verificado em ${formatDayMonthYearFull(widget.pet.verifiedAt)}',
+            style: AppTextStyles.poppinsMedium(
+                    color: AppColors.primary, fontSize: 14)
+                .style,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'OK',
+                style: AppTextStyles.poppinsMedium(
+                        color: AppColors.primary, fontSize: 14)
+                    .style,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

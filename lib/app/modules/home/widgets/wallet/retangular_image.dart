@@ -25,7 +25,10 @@ class RetangularImage extends StatelessWidget {
       fit: fit,
       width: width,
       height: height,
-      errorBuilder: (context, error, stackTrace) => const SizedBox(), // Se a URL não carregar, retorna vazio
+      errorBuilder: (context, error, stackTrace) {
+        debugPrint('@@@ RetangularImage failed to load $imageUrl: $error');
+        return const SizedBox(); // Se a URL não carregar, retorna vazio
+      },
     );
   }
 }
