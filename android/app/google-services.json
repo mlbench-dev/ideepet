@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "123109840614",
-    "project_id": "ideal-pet-4376b",
-    "storage_bucket": "ideal-pet-4376b.firebasestorage.app"
+    "project_number": "721852722464",
+    "project_id": "pet-hero-423816",
+    "storage_bucket": "pet-hero-423816.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123109840614:android:5562b5fe26ea2b8086cd27",
+        "mobilesdk_app_id": "1:721852722464:android:5562b5fe26ea2b8086cd27",
         "android_client_info": {
           "package_name": "br.com.ideepet.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDFHEeIzRE8SmSVTSqRhRbrgOx1Sn2smKA"
+          "current_key": "AIzaSyBygExI8d7eUKruIsLChdq6ui9KNQDKozk"
         }
       ],
       "services": {

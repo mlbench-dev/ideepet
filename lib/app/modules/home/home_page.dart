@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:idee_pet/app/app.dart';
 
 class HomePage extends BasePage<HomeController> {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget body(BuildContext context) {
@@ -125,6 +125,39 @@ class HomePage extends BasePage<HomeController> {
                   pet: controller.appStateService.pet(),
                   elevation: 0,
                   goToEditFood: controller.goToEditFoodPet,
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: Obx(() => ElevatedButton.icon(
+                        onPressed: controller.isSendingLostAlert.isTrue
+                            ? null
+                            : controller.sendLostPetAlert,
+                        icon: controller.isSendingLostAlert.isTrue
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                    strokeWidth: 2, color: Colors.white),
+                              )
+                            : const Icon(Icons.pets, color: Colors.white),
+                        label: Text(
+                          'I lost my pet',
+                          style: AppTextStyles.title(fontSize: 16)
+                              .style
+                              .copyWith(color: Colors.white),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.errorColor,
+                          disabledBackgroundColor:
+                              AppColors.errorColor.withAlpha(150),
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      )),
                 ),
                 const SizedBox(height: 150),
               ],

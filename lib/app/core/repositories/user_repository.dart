@@ -3,6 +3,22 @@ import 'package:idee_pet/app/app.dart';
 class UserRepository extends BaseRepository {
   static const String getUserPath = '/users/me';
   static const patchUpdateUser = '/users';
+  static const putFcmToken = '/users/fcm-token';
+
+  Future<BaseResponse<void>> updateFcmToken(String fcmToken) async {
+    final response = await put(putFcmToken, {'fcm_token': fcmToken});
+    return BaseResponse.create(response: response);
+  }
+
+  /// Saves the user's location, used to find neighbors for lost pet alerts.
+  /// The backend expects the coordinates as strings.
+  Future<BaseResponse<void>> updateLocation(double lat, double long) async {
+    final response = await patch(patchUpdateUser, {
+      'address_lat': lat.toString(),
+      'address_long': long.toString(),
+    });
+    return BaseResponse.create(response: response);
+  }
 
   Future<BaseResponse<Profile>> getProfile() async {
     final response = await get(getUserPath);

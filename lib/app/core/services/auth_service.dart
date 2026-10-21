@@ -42,6 +42,7 @@ class AuthService extends GetxService {
   }
 
   Future<void> logout() async {
+    await PushNotificationService.clearToken();
     await _tokenStorage.clearTokens();
     final appStateService = Get.find<AppStateService>();
     appStateService.cleanAllData();

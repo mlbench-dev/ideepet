@@ -1,6 +1,7 @@
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:idee_pet/app/app.dart';
-import 'package:idee_pet/app/routes/biometric_routes.dart';
+import 'package:idee_pet/app/modules/biometric/camera_permission_page.dart';
 
 class HomeController extends GetxController {
   final AuthService _authService;
@@ -43,7 +44,37 @@ class HomeController extends GetxController {
       await Get.offAllNamed(NewPetRoutes.newPet);
     }
     isLoading(false);
+    // One after the other so the two permission dialogs don't overlap.
+    await _syncUserLocation();
+    PushNotificationService.syncToken();
   }
+
+  /// If the user has no saved location yet, asks for location permission and
+  /// saves the coordinates on the backend. Does nothing if the user denies it.
+  Future<void> _syncUserLocation() async {
+    // Profile.empty() has id '---', meaning /users/me was not loaded yet.
+    if (appStateService.profile().id == '---') await _getProfile();
+
+    final profile = appStateService.profile();
+    if (profile.id == '---' || _hasValue(profile.addressLat) &&
+        _hasValue(profile.addressLong)) {
+      return;
+    }
+
+    final position = await _getCurrentPositionOrNull();
+    if (position == null) return;
+
+    final response = await Get.find<UserRepository>()
+        .updateLocation(position.latitude, position.longitude);
+    if (response.success) {
+      appStateService.profile.update((profile) {
+        profile?.addressLat = position.latitude.toString();
+        profile?.addressLong = position.longitude.toString();
+      });
+    }
+  }
+
+  bool _hasValue(String? value) => value != null && value.trim().isNotEmpty;
 
   Future<void> _getPets() async {
     final response = await _repository.getPets();
@@ -110,8 +141,7 @@ class HomeController extends GetxController {
   }
 
   void goToBiometricScanning() {
-    _navigationService.toNamed(BiometricRoutes.scanning,
-        arguments: appStateService.pet());
+    openBiometricScanning(appStateService.pet());
   }
 
   Future<void> goToNotifications() async {
@@ -120,6 +150,68 @@ class HomeController extends GetxController {
 
   void goToProfile() {
     _navigationService.toNamed(HomeRoutes.profile);
+  }
+
+  final isSendingLostAlert = false.obs;
+
+  Future<void> sendLostPetAlert() async {
+    if (isSendingLostAlert.isTrue) return;
+
+    final pet = appStateService.pet();
+    if (!await showLostPetDialog(pet)) return;
+
+    isSendingLostAlert(true);
+    final position = await _getCurrentPositionOrNull();
+    final response = await _repository.sendLostPetAlert(
+      pet.id,
+      lat: position?.latitude,
+      long: position?.longitude,
+    );
+    isSendingLostAlert(false);
+
+    if (response.success) {
+      showSuccess(
+        message: response.result?.isNotEmpty == true
+            ? response.result!
+            : 'Alerta enviado para a vizinhança.',
+      );
+    } else {
+      showError(
+        message: response.errorMessages.isNotEmpty
+            ? response.errorMessages.first.toString()
+            : 'Não foi possível enviar o alerta',
+      );
+    }
+  }
+
+  /// Returns the device location when available. On any failure it returns
+  /// null and the backend falls back to the owner's saved address.
+  Future<Position?> _getCurrentPositionOrNull() async {
+    try {
+      if (!await Geolocator.isLocationServiceEnabled()) return null;
+
+      var permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        return null;
+      }
+
+      return await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 10),
+        ),
+      );
+    } catch (_) {
+      try {
+        return await Geolocator.getLastKnownPosition();
+      } catch (_) {
+        return null;
+      }
+    }
   }
 
   RxInt notifications = 0.obs;

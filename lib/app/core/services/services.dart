@@ -7,3 +7,4 @@ export 'token_service.dart';
 export 'via_cep_service.dart';
 export 'nose_edge_storage.dart';
 export 'branch_service.dart';
+export 'push_notification_service.dart';

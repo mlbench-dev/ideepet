@@ -8,6 +8,7 @@ import 'package:idee_pet/app/core/core_old/widgets/oval_outline.dart';
 import 'package:idee_pet/app/core/core_old/widgets/svgs.dart';
 import 'package:idee_pet/app/core/helpers/messages.dart';
 import 'package:idee_pet/app/modules/biometric/biometric_controller.dart';
+import 'package:idee_pet/app/routes/biometric_routes.dart';
 import 'package:video_player/video_player.dart';
 
 class BiometicScanning extends StatefulWidget {
@@ -166,9 +167,13 @@ class _BiometicScanningState extends State<BiometicScanning>
 
     if (success) {
       controller.goToSuccessScreen();
-    } else {
-      await _retryRecording();
+      return;
     }
+
+    await _videoController?.pause();
+    await Get.toNamed(BiometricRoutes.retryReading, arguments: controller.pet);
+    // "Fazer nova leitura" or back both return here for a new recording.
+    if (mounted) await _retryRecording();
   }
 
   Future<void> _retryRecording() async {
